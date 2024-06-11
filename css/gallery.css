@@ -1,0 +1,166 @@
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+
+body {
+  min-height: 100svh;
+  padding: 2rem;
+  background-color: #121212;
+  color: white;
+  font-family: system-ui;
+  display: grid;
+  place-content: center;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.gallery {
+  --_size: 80px; /* width and heigh of iamges */
+  --_grid-cols: repeat(3, 1fr);
+  --_grid-areas: "large large large" "large large large" "large large large"
+    "thumb-1 thumb-2 thumb-3" "thumb-4 thumb-5 thumb-6"
+    "thumb-7 thumb-8 thumb-9";
+  --_gap: 0.5rem;
+  --_info-top: 0;
+  --_info-bottom: auto;
+  --_info-translate: -100px;
+
+  width: 100%;
+  max-width: fit-content;
+  min-width: min-content;
+  display: grid;
+  grid-template-columns: var(--_grid-cols);
+  grid-template-areas: var(--_grid-areas);
+
+  gap: var(--_gap);
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 720px) {
+  .gallery {
+    --_size: 120px;
+    --_grid-cols: repeat(6, 1fr);
+    --_grid-areas: "thumb-1 thumb-2 thumb-3 large large large"
+      "thumb-4 thumb-5 thumb-6 large large large"
+      "thumb-7 thumb-8 thumb-9 large large large";
+    --_info-top: auto;
+    --_info-bottom: 0;
+    --_info-translate: 100px;
+  }
+}
+
+.gallery > label {
+  cursor: pointer;
+  height: var(--_size);
+  aspect-ratio: 1;
+}
+.gallery > label:nth-child(1) {
+  grid-area: thumb-1;
+}
+.gallery > label:nth-child(2) {
+  grid-area: thumb-2;
+}
+.gallery > label:nth-child(3) {
+  grid-area: thumb-3;
+}
+.gallery > label:nth-child(4) {
+  grid-area: thumb-4;
+}
+.gallery > label:nth-child(5) {
+  grid-area: thumb-5;
+}
+.gallery > label:nth-child(6) {
+  grid-area: thumb-6;
+}
+.gallery > label:nth-child(7) {
+  grid-area: thumb-7;
+}
+.gallery > label:nth-child(8) {
+  grid-area: thumb-8;
+}
+.gallery > label:nth-child(9) {
+  grid-area: thumb-9;
+}
+
+.gallery > label img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 500ms ease-in-out;
+}
+.gallery > label > div {
+  position: absolute;
+  right: 0;
+  top: var(--_info-top);
+  bottom: var(--_info-bottom);
+  width: calc((var(--_size) * 3) + var(--_gap) * 2);
+  z-index: 10;
+  background-color: #00000099;
+  padding: 1rem;
+  font-size: 0.85rem;
+  font-weight: 300;
+  opacity: 0;
+  translate: 0 var(--_info-translate);
+  transition: 300ms ease-in-out;
+}
+.gallery > label > div h2 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.gallery > label > div a {
+  color: white;
+  transition: scale 300ms;
+  display: inline-block;
+  transform-origin: bottom left;
+}
+.gallery > label > div a:hover {
+  scale: 1.25;
+}
+.main-img {
+  grid-area: large;
+  aspect-ratio: 1/1;
+}
+
+.gallery > label::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc((var(--_size) * 3) + var(--_gap) * 2);
+  height: calc((var(--_size) * 3) + var(--_gap) * 2);
+  aspect-ratio: 1;
+  background-image: var(--bg-img);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+
+/* reveal photo */
+.gallery > label:has(input:checked)::before {
+  opacity: 1;
+}
+.gallery > label:has(input:checked) > div {
+  opacity: 1;
+  translate: 0;
+  transition-delay: 500ms;
+}
